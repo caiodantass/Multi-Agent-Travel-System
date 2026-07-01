@@ -6,11 +6,8 @@ import {
   CreditCard, CloudSun, AlertTriangle, CheckCircle2, 
   Sparkle, RefreshCw, X, Menu, DollarSign 
 } from 'lucide-react';
-import { AgenteCoordenador } from './agents/coordenador';
-import { EspecialistaVoo } from './agents/especialistaVoo';
-import { EspecialistaHospedagem } from './agents/especialistaHospedagem';
-import { EspecialistaRoteiro } from './agents/especialistaRoteiro';
-import { AgenteContexto } from './agents/agenteContexto';
+// Agentes migrados para o backend.
+// As chamadas agora serão feitas via fetch() para a API Node.js.
 
 const App = () => {
   const [messages, setMessages] = useState([
@@ -147,7 +144,7 @@ const App = () => {
     setIsProcessing(true);
     setActiveAgent("coordinator");
 
-    setTimeout(() => {
+    setTimeout(async () => {
       // Cria a nova extração inicial com os serviços escolhidos
       const newExtraction = {
         ...currentExtraction,
@@ -155,20 +152,34 @@ const App = () => {
       };
       setCurrentExtraction(newExtraction);
 
-      // Gera a resposta solicitando os dados específicos
-      const status = AgenteCoordenador.validate(newExtraction);
-      const systemResponse = AgenteContexto.generateResponse(status, newExtraction);
-
-      setMessages(prev => [
-        ...prev,
-        { id: Date.now() + 1, role: 'system', content: systemResponse, timestamp: new Date() }
-      ]);
-      setConsoleLogs(prev => [
-        ...prev,
-        `[Coordinator] Usuário selecionou o serviço: ${label}.`,
-        `[Coordinator] Serviços ativados: ${selectedServices.join(', ')}.`,
-        `[Coordinator] Validação: Faltando dados para prosseguir: ${status.missingFields.join(', ')}`
-      ]);
+      try {
+        const response = await fetch('http://localhost:3001/api/plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userMessage: '', currentExtraction: newExtraction })
+        });
+        
+        const data = await response.json();
+        
+        if (data.systemResponse) {
+          setMessages(prev => [
+            ...prev,
+            { id: Date.now() + 1, role: 'system', content: data.systemResponse, timestamp: new Date() }
+          ]);
+        }
+        
+        if (data.logs) {
+          setConsoleLogs(prev => [
+            ...prev,
+            `[Coordinator] Usuário selecionou o serviço: ${label}.`,
+            ...data.logs
+          ]);
+        }
+      } catch (err) {
+        console.error("Erro ao contactar o servidor:", err);
+        setConsoleLogs(prev => [...prev, "[Erro] Falha ao comunicar com o Backend."]);
+      }
+      
       setIsProcessing(false);
     }, 600);
   };
@@ -187,54 +198,31 @@ const App = () => {
     setActiveAgent("coordinator");
 
     // Simular o delay de raciocínio da rede de agentes
-    setTimeout(() => {
+    setTimeout(async () => {
       try {
         setConsoleLogs(prev => [...prev, `[Coordinator] Novo input recebido: "${userMessage}"`]);
-        
-        // Chamada ao coordenador (processamento + extração com mesclagem de contexto)
-        const { data: extractedData, logs: coordLogs } = AgenteCoordenador.processInput(userMessage, currentExtraction);
-        
+        setConsoleLogs(prev => [...prev, `[Network] Enviando requisição para o Backend...`]);
+
+        const response = await fetch('http://localhost:3001/api/plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userMessage, currentExtraction })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        const { extractedData, status, systemResponse, compilation, logs } = data;
+
         setCurrentExtraction(extractedData);
-        setConsoleLogs(prev => [...prev, ...coordLogs]);
+        if (logs) {
+          setConsoleLogs(prev => [...prev, ...logs]);
+        }
 
-        // Validação das regras de preenchimento
-        const status = AgenteCoordenador.validate(extractedData);
-        const systemResponse = AgenteContexto.generateResponse(status, extractedData);
-
-        if (status.isComplete) {
-          setConsoleLogs(prev => [...prev, "[Coordinator] Validação: Todos os campos mínimos preenchidos. Disparando pipeline de agentes..."]);
-          
-          // Rodar o Pipeline Multiagente
-          // Ativando KnowledgeAgent
-          setActiveAgent("knowledge");
-          const pipelineResult = AgenteCoordenador.runPipeline(extractedData);
-          
-          // Simular ativação visual
-          setActiveAgent("weather");
-          // Adicionando logs em lote com delay simulado
-          setConsoleLogs(prev => [...prev, ...pipelineResult.logs]);
-          
-          setActiveAgent("budget");
-          // Gerar mock de vôos e hospedagem
-          const flightData = status.activatedAgents.includes('flight') ? EspecialistaVoo.generate(extractedData) : null;
-          const accommodationData = status.activatedAgents.includes('accommodation') ? EspecialistaHospedagem.generate(extractedData) : null;
-          const itineraryData = status.activatedAgents.includes('itinerary') ? EspecialistaRoteiro.generate(extractedData) : null;
-
-          setActiveAgent("validator");
-
-          const compilation = {
-            id: activeTripId || Date.now(),
-            destination: extractedData.destination,
-            flight: flightData,
-            accommodation: accommodationData,
-            itinerary: itineraryData,
-            knowledge: pipelineResult.knowledgeResult,
-            weather: pipelineResult.weatherResult,
-            budget: pipelineResult.budgetResult,
-            validation: pipelineResult.validationResult,
-            timestamp: new Date()
-          };
-
+        if (status.isComplete && compilation) {
           setResults(compilation);
           saveTripToMemory(extractedData, compilation, [
             ...updatedMessages,
@@ -245,32 +233,25 @@ const App = () => {
               timestamp: new Date() 
             }
           ]);
-
-          setMessages(prev => [...prev, { 
-            id: Date.now() + 1, 
-            role: 'system', 
-            content: systemResponse,
-            timestamp: new Date() 
-          }]);
-          
-          setActiveAgent("coordinator");
           setConsoleLogs(prev => [...prev, `[Coordinator] Pipeline concluído. Plano de viagem para "${extractedData.destination}" pronto e renderizado na tela.`]);
         } else {
-          setMessages(prev => [...prev, { 
-            id: Date.now() + 1, 
-            role: 'system', 
-            content: systemResponse,
-            timestamp: new Date() 
-          }]);
           setConsoleLogs(prev => [...prev, `[Coordinator] Validação pendente. Faltando dados: ${status.missingFields.join(', ')}`]);
         }
+
+        setMessages(prev => [...prev, { 
+          id: Date.now() + 1, 
+          role: 'system', 
+          content: systemResponse,
+          timestamp: new Date() 
+        }]);
+
       } catch (error) {
         console.error(error);
         setConsoleLogs(prev => [...prev, `[Coordinator] ERRO DE PROCESSAMENTO: ${error.message}`]);
         setMessages(prev => [...prev, { 
           id: Date.now() + 1, 
           role: 'system', 
-          content: 'Desculpe, tive um problema ao orquestrar a resposta dos agentes. Pode repetir a informação?',
+          content: 'Desculpe, tive um problema ao orquestrar a resposta do Backend. O servidor está rodando?',
           timestamp: new Date() 
         }]);
       } finally {
