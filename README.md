@@ -1,4 +1,4 @@
-# 🌍 Multi-Agent Travel System — Autonomous Trip Planning Architecture
+# Multi-Agent Travel System — Autonomous Trip Planning Architecture
 
 [![React](https://img.shields.io/badge/Frontend-React%2019%20%2B%20Vite-61DAFB.svg?logo=react&logoColor=black)](https://react.dev/)
 [![TailwindCSS](https://img.shields.io/badge/Styling-Tailwind%20CSS%20v4-38B2AC.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
