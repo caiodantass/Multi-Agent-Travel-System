@@ -1,93 +1,119 @@
-<div align="center">
-  <h1>🌍 Multi-Agent Travel System</h1>
-  <h3><i>Sistema Inteligente de Planejamento Automatizado de Viagens</i></h3>
-  
-  <p align="center">
-    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
-    <img src="https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E" alt="Vite" />
-    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
-    <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" alt="JavaScript" />
-  </p>
-</div>
+# 🌍 Multi-Agent Travel System — Autonomous Trip Planning Architecture
 
-<br />
+[![React](https://img.shields.io/badge/Frontend-React%2019%20%2B%20Vite-61DAFB.svg?logo=react&logoColor=black)](https://react.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Styling-Tailwind%20CSS%20v4-38B2AC.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![NodeJS](https://img.shields.io/badge/Backend-Node.js%20%2B%20Express-339933.svg?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Architecture](https://img.shields.io/badge/Architecture-10%20Autonomous%20Agents-FF6F00.svg)](#-arquitetura-orquestração-dos-10-agentes)
+[![Animations](https://img.shields.io/badge/UI-Framer%20Motion-black.svg?logo=framer&logoColor=white)](https://www.framer.com/motion/)
 
-## 📖 O que é este projeto?
+Sistema inteligente de ponta a ponta para planejamento automatizado de viagens baseado em uma **arquitetura de múltiplos agentes colaborativos**. 
 
-O **Multi-Agent Travel System** é uma aplicação web interativa que utiliza uma arquitetura simulada de múltiplos agentes inteligentes para planejar viagens de ponta a ponta. 
-
-Com uma única mensagem em linguagem natural (ex: *"Quero uma viagem de João Pessoa para São Paulo dia 11/08/2026 até 21/08/2026 para 3 pessoas em um Airbnb"*), o sistema extrai o contexto, lida com informações incompletas de forma conversacional e ativa uma rede de especialistas virtuais que constroem um roteiro diário, calculam o orçamento e geram links automatizados de parceiros (como Kayak e Airbnb) perfeitamente preenchidos para finalizar as reservas.
-
-## 🎯 O Problema Resolvido
-
-Planejar viagens costuma ser um processo extremamente manual, fragmentado e frustrante. Usuários precisam cruzar dezenas de abas no navegador comparando voos, buscando as melhores localizações, calculando custo de vida local e formatando roteiros. 
-
-**A solução:** Uma única interface conversacional. O projeto abstrai toda a complexidade exigindo apenas um prompt do usuário. A aplicação blinda a requisição, forçando o envio de informações mínimas e entregando um pacote fechado e calculado em questão de segundos.
-
-## 🧠 Arquitetura: Os 10 Agentes Especialistas
-
-O grande diferencial deste projeto é a sua arquitetura modular, onde cada responsabilidade do planejamento foi fragmentada para um "agente" hiper-especializado. Isso previne alucinações e garante alta coerência na montagem do plano:
-
-1. **Agente Coordenador:** O cérebro da operação. Avalia o prompt, distribui os dados e verifica se há informações faltando antes de disparar o restante dos processos.
-2. **Agente de Contexto e Comunicação:** A interface humana. Se falta algum dado vital, gera um texto dinâmico amigável interagindo com o usuário.
-3. **Agentes de Extração (Intenção, Local e Tempo):** Extratores de Linguagem Natural baseados em RegEx que capturam e isolam perfeitamente destinos, datas e quantidade de hóspedes.
-4. **Agente de Conhecimento:** O banco de dados turístico. Retorna a moeda local, fuso horário, atrações e dicas de segurança do destino.
-5. **Agente de Clima:** Avalia as datas da viagem, prevê a temperatura média da estação e gera sugestões inteligentes para fazer as malas.
-6. **Especialista em Voos:** Focado na criação das lógicas de voos domésticos e internacionais e companhias aéreas.
-7. **Especialista em Hospedagem:** Analisa o perfil solicitado (Airbnb, resort, hotel ou pousada) para precificar e gerar as opções de estadia.
-8. **Especialista em Roteiros:** Monta um cronograma diário completo baseado na exata quantidade de dias da viagem (Manhã, Tarde e Noite).
-9. **Agente de Orçamento e Finanças:** O braço financeiro. Cruza taxas de câmbio, enquadra o plano no "orçamento máximo" fornecido pelo usuário e constrói as URLs diretas de parceiros.
-10. **Agente Validador:** A auditoria final. Avalia a coerência das datas e do pacote antes de exibi-lo ao usuário.
-
-## 🛠️ Tecnologias Utilizadas
-
-O projeto foi totalmente desenvolvido utilizando um ecossistema moderno voltado à alta performance e experiência visual:
-
-- **[React 19](https://react.dev/):** Biblioteca principal para a construção das interfaces de usuário e gerenciamento de estado.
-- **[Vite](https://vitejs.dev/):** Bundler super rápido responsável pelo ambiente de desenvolvimento e build.
-- **[Tailwind CSS (v4)](https://tailwindcss.com/):** Framework de utilitários CSS para estilização ágil, garantindo design responsivo e moderno (Glassmorphism e Dark Mode).
-- **[Framer Motion](https://www.framer.com/motion/):** Biblioteca de animações para micro-interações fluidas e responsivas na interface.
-- **[Lucide React](https://lucide.dev/):** Pacote de ícones altamente customizáveis e leves.
-
-## 🚀 Como Rodar Localmente
-
-Siga o passo a passo abaixo para rodar o projeto em sua máquina local:
-
-1. **Clone este repositório:**
-   ```bash
-   git clone https://github.com/SEU-USUARIO/multi-agent-travel-system.git
-   ```
-
-2. **Acesse a pasta do projeto:**
-   ```bash
-   cd multi-agent-travel-system
-   ```
-
-3. **Instale as dependências:**
-   ```bash
-   npm install
-   ```
-
-4. **Inicie o servidor de desenvolvimento:**
-   ```bash
-   npm run dev
-   ```
-
-5. O servidor estará rodando. Basta acessar `http://localhost:5173` no seu navegador!
+A partir de um único prompt em linguagem natural (ex: *"Quero viajar de João Pessoa para São Paulo de 11/08/2026 a 21/08/2026 para 3 pessoas em um Airbnb"*), o sistema orquestra uma malha de **10 agentes especializados** que extraem entidades, analisam condições climáticas, montam roteiros dinâmicos dia a dia, consolidam custos e geram links parametrizados de reserva para parceiros (como Kayak e Airbnb).
 
 ---
 
-## 📸 Demonstração / Telas do Sistema
+## 🏗️ Arquitetura: Orquestração dos 10 Agentes
 
-> *💡 Dica: Adicione aqui GIFs, vídeos ou screenshots que você capturou durante os testes (Interface Principal, Orçamentos, Roteiros, e Links gerados).*
+```mermaid
+flowchart TD
+    User(["👤 Usuário (Prompt em Linguagem Natural)"]) --> Coord["🎯 Agente Coordenador"]
 
-<p align="center">
-  <i>(Insira a imagem de demonstração aqui)</i>
-</p>
+    subgraph Phase1 ["1. Extração & Comunicação"]
+        Coord --> Context["💬 Agente de Contexto & Entidades"]
+        Context --> Extractor["🔍 Parsers Semânticos (Origem, Destino, Datas, Hóspedes)"]
+    end
+
+    subgraph Phase2 ["2. Enriquecimento de Domínio"]
+        Extractor --> KB["📚 Agente de Conhecimento (Atrações, Moeda, Dicas)"]
+        Extractor --> Weather["☀️ Agente de Clima (Previsão Sazonal & Bagagem)"]
+    end
+
+    subgraph Phase3 ["3. Especialistas Verticais"]
+        KB & Weather --> Flights["✈️ Especialista em Voos (Companhias, Conexões)"]
+        KB & Weather --> Stays["🏨 Especialista em Hospedagem (Airbnb, Hotéis, Diárias)"]
+        KB & Weather --> Itinerary["📅 Especialista em Roteiros (Manhã, Tarde, Noite)"]
+    end
+
+    subgraph Phase4 ["4. Consolidação & Auditoria"]
+        Flights & Stays & Itinerary --> Budget["💰 Agente de Orçamento & Câmbio"]
+        Budget --> Validator["🛡️ Agente Validador (Auditoria de Coerência e Datas)"]
+    end
+
+    Validator --> UI["🖥️ Interface Reativa (Roteiro, Custos e Links Diretos)"]
+```
 
 ---
 
-<div align="center">
-  Feito com ❤️ por Caiom (ou seu nome/equipe). <br />
-  Avaliado na Sprint 4.
-</div>
+## 🧠 Papéis e Responsabilidades dos Agentes
+
+1. **🎯 Agente Coordenador (`coordenador.js`)**: O cérebro da operação. Avalia o prompt, distribui os dados e verifica se há requisitos mínimos antes de disparar o pipeline de execução.
+2. **💬 Agente de Contexto (`agenteContexto.js`)**: Gerencia o diálogo com o usuário caso faltem dados essenciais, solicitando complementos de forma fluida.
+3. **🔍 Parsers Semânticos de Entidades**: Algoritmos de NLP que isolam destinos, janelas temporais de viagem e quantidade de viajantes.
+4. **📚 Agente de Conhecimento (`agenteConhecimento.js`)**: Base de dados turística para determinação de fusos horários, moedas locais, atrativos e recomendações de segurança.
+5. **☀️ Agente de Clima (`agenteClima.js`)**: Avalia a sazonalidade nas datas especificadas, prevê temperaturas médias e gera sugestões de vestuário/bagagem.
+6. **✈️ Especialista em Voos (`especialistaVoo.js`)**: Mapeia rotas aéreas domésticas e internacionais, aeroportos e precificação média.
+7. **🏨 Especialista em Hospedagem (`especialistaHospedagem.js`)**: Segmenta as opções de acomodação conforme a preferência (Airbnb, resort, pousada ou hotel).
+8. **📅 Especialista em Roteiros (`especialistaRoteiro.js`)**: Gera cronogramas diários detalhados (turnos: Manhã, Tarde e Noite) ajustados à duração da estadia.
+9. **💰 Agente de Orçamento & Câmbio (`agenteOrcamento.js`)**: Converte moedas, valida limites orçamentários e constrói URLs parametrizadas com *deep-linking* de parceiros.
+10. **🛡️ Agente Validador (`agenteValidador.js`)**: Executa a auditoria final de integridade (consistência de datas, valores e lógica do itinerário) antes da entrega.
+
+---
+
+## 🛠️ Stack Tecnológica
+
+* **Frontend**:
+  * **React 19**: Arquitetura baseada em componentes reativos.
+  * **Vite**: Bundler de alta velocidade e compilação otimizada.
+  * **Tailwind CSS v4**: Estilização utilitária com suporte a Glassmorphism e Dark Mode.
+  * **Framer Motion**: Animações de transição de estado e micro-interações fluidas.
+  * **Lucide React**: Ícones vetoriais modernos.
+* **Backend**:
+  * **Node.js & Express**: API REST assíncrona responsável pela orquestração dos agentes.
+
+---
+
+## 📁 Estrutura do Repositório
+
+Multi-Agent-Travel-System/ ├── backend/ │ ├── src/ │ │ ├── agents/ # Implementação dos 10 agentes especializados │ │ ├── data/ # Base de conhecimento turístico e climatológico │ │ └── server.js # API REST Express │ └── package.json │ ├── src/ │ ├── components/ # Componentes visuais (Chat, Roteiro, Orçamento) │ ├── agents/ # Lógica de agentes no lado cliente │ ├── data/ # Bases estáticas e configurações │ ├── App.jsx # Ponto de entrada da aplicação │ └── index.css # Configurações de tema e Tailwind │ ├── vite.config.js └── package.json
+
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### Pré-requisitos
+* [Node.js](https://nodejs.org/) instalado (versão 18 ou superior).
+
+### 1. Clonar o Repositório
+```bash
+git clone https://github.com/caiodantass/Multi-Agent-Travel-System.git
+cd Multi-Agent-Travel-System
+```
+
+### 2. Configurar o Backend
+```bash
+cd backend
+npm install
+node server.js
+```
+
+(O backend iniciará na porta 3001 ou configurada).
+
+### 3. Configurar o Frontend
+
+Abra um novo terminal na raiz do projeto:
+```bash
+npm install
+npm run dev
+```
+
+Acesse a interface no navegador em [http://localhost:5173](http://localhost:5173).
+
+---
+
+## 👨‍💻 Autor
+
+**Caio Dantas**  
+* Engenheiro de Software / Desenvolvedor de Firmware  
+* GitHub: [@caiodantass](https://github.com/caiodantass)  
+* LinkedIn: [linkedin.com/in/caiodantass](https://www.linkedin.com/in/caio-l%C3%ADvio/)
