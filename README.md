@@ -16,7 +16,7 @@ A partir de um único prompt em linguagem natural (ex: *"Quero viajar de João P
 
 ```mermaid
 flowchart TD
-    User([" Usuário (Prompt em Linguagem Natural)"]) --> Coord["🎯 Agente Coordenador"]
+    User([" Usuário (Prompt em Linguagem Natural)"]) --> Coord[" Agente Coordenador"]
 
     subgraph Phase1 ["1. Extração & Comunicação"]
         Coord --> Context[" Agente de Contexto & Entidades"]
